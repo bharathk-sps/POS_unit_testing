@@ -9,13 +9,13 @@ authServiceTest() {
         AuthUser user =
             AuthUser(userName: "bharath_kumar", password: "123456789");
         bool? isAuthenticated =
-            AuthService().signIn(user.userName, user.password);
+            AuthService.instance.signIn(user.userName, user.password);
         expect(isAuthenticated, true);
       });
       test("should not signIn", () {
         AuthUser user = AuthUser(userName: "wrong_user", password: "123456789");
         bool? isAuthenticated =
-            AuthService().signIn(user.userName, user.password);
+            AuthService.instance.signIn(user.userName, user.password);
         expect(isAuthenticated, false);
       });
     });
@@ -24,7 +24,7 @@ authServiceTest() {
         AuthUser user =
             AuthUser(userName: "new_user", password: "new_password");
         bool? isAuthenticated =
-            AuthService().signUp(user.userName, user.password);
+            AuthService.instance.signUp(user.userName, user.password);
         expect(isAuthenticated, true);
       });
 
@@ -32,7 +32,7 @@ authServiceTest() {
         AuthUser user =
             AuthUser(userName: "another_user", password: "123456789");
         bool? isAuthenticated =
-            AuthService().signUp(user.userName, user.password);
+            AuthService.instance.signUp(user.userName, user.password);
         expect(isAuthenticated, false);
       });
     });
@@ -48,13 +48,13 @@ authServiceFailTest() {
         AuthUser user =
         AuthUser(userName: "bharath_kum", password: "123456789");
         bool? isAuthenticated =
-        AuthService().signIn(user.userName, user.password);
+        AuthService.instance.signIn(user.userName, user.password);
         expect(isAuthenticated, true);
       });
       test("should not signIn", () {
         AuthUser user = AuthUser(userName: "bharath_kumar", password: "123456789");
         bool? isAuthenticated =
-        AuthService().signIn(user.userName, user.password);
+        AuthService.instance.signIn(user.userName, user.password);
         expect(isAuthenticated, false);
       });
     });
@@ -63,7 +63,7 @@ authServiceFailTest() {
         AuthUser user =
         AuthUser(userName: "bharath_kumar", password: "123456789");
         bool? isAuthenticated =
-        AuthService().signUp(user.userName, user.password);
+        AuthService.instance.signUp(user.userName, user.password);
         expect(isAuthenticated, true);
       });
 
@@ -71,7 +71,7 @@ authServiceFailTest() {
         AuthUser user =
         AuthUser(userName: "new_user", password: "12345678");
         bool? isAuthenticated =
-        AuthService().signUp(user.userName, user.password);
+        AuthService.instance.signUp(user.userName, user.password);
         expect(isAuthenticated, false);
       });
     });

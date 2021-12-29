@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:poc_unit_test/services/auth_services.dart';
 import 'package:poc_unit_test/views/authentication/auth.dart';
+import 'package:poc_unit_test/views/authentication/auth_wrapper.dart';
 import 'package:poc_unit_test/views/homescreen/home_screen.dart';
+import 'package:poc_unit_test/views/widgets.dart/loading_widget.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -14,6 +16,7 @@ class _SignUpState extends State<SignUp> {
   TextEditingController userNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final GlobalKey<FormState> _signupFormKey = GlobalKey<FormState>();
+  AuthService authService = AuthService.instance;
   String errorText = "";
   bool obscureText = true;
 
@@ -24,14 +27,14 @@ class _SignUpState extends State<SignUp> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(
               height: 16.0,
             ),
             TextFormField(
-              key:const Key("signUpUser"),
-
+              key: const Key("signUpUser"),
               controller: userNameController,
               validator: (value) {
                 if (value!.isEmpty) {
@@ -43,6 +46,7 @@ class _SignUpState extends State<SignUp> {
                 }
               },
               decoration: const InputDecoration(
+                isDense: true,
                 hintText: "Enter user name",
                 prefixIcon: Icon(Icons.account_circle_outlined),
                 border: OutlineInputBorder(
@@ -56,8 +60,7 @@ class _SignUpState extends State<SignUp> {
               height: 16.0,
             ),
             TextFormField(
-              key:const Key("signUpPwd"),
-
+              key: const Key("signUpPwd"),
               controller: passwordController,
               obscureText: obscureText,
               validator: (value) {
@@ -70,6 +73,7 @@ class _SignUpState extends State<SignUp> {
                 }
               },
               decoration: InputDecoration(
+                isDense: true,
                 hintText: "Enter password",
                 suffixIcon: IconButton(
                     onPressed: () {
@@ -78,8 +82,8 @@ class _SignUpState extends State<SignUp> {
                       });
                     },
                     icon: Icon(!obscureText
-                        ? Icons.visibility_off
-                        : Icons.visibility)),
+                        ? Icons.visibility_off_outlined
+                        : Icons.visibility_outlined)),
                 prefixIcon: const Icon(Icons.vpn_key_outlined),
                 border: const OutlineInputBorder(
                   borderSide: BorderSide(
@@ -110,15 +114,18 @@ class _SignUpState extends State<SignUp> {
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.green),
                 ),
-                onPressed: () {
+                onPressed: () async {
+                  errorText = "";
                   if (_signupFormKey.currentState!.validate()) {
-                    bool? value = AuthService().signUp(
+                    bool? value = authService.signUp(
                         userNameController.text, passwordController.text);
                     if (value!) {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => HomeScreen(
-                                userName: userNameController.text,
-                              )));
+                      showloadingDialog(context);
+                      await authService
+                          .setAuthState(userNameController.text)
+                          .then((value) => Navigator.of(context)
+                              .pushReplacement(MaterialPageRoute(
+                                  builder: (context) => const AuthWrapper())));
                     } else {
                       setState(() {
                         errorText = "Account Already Exist, Please signIn";
