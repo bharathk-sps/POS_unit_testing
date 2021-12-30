@@ -8,7 +8,7 @@ import 'package:poc_unit_test/views/authentication/auth.dart';
 authWidgetTest() {
   group("Authentication widget check", () {
     group("SignIn Validation", () {
-      testWidgets("SignIn Empty From Validation", (WidgetTester tester) async {
+      testWidgets("SignIn Empty Form Validation", (WidgetTester tester) async {
         await tester.pumpWidget(const MaterialApp(
           home: AuthScreen(),
         ));
@@ -45,7 +45,7 @@ authWidgetTest() {
       });
     });
     group("SignUp Validation", () {
-      testWidgets("SignUp Empty From Validation", (WidgetTester tester) async {
+      testWidgets("SignUp Empty Form Validation", (WidgetTester tester) async {
         await tester.pumpWidget(const MaterialApp(
           home: AuthScreen(),
         ));
@@ -85,38 +85,38 @@ authWidgetTest() {
 }
 
 //Test will fail
-authWidgetFailedTest() {
-  group("Authentication widget check", () {
-    group("SignIn Validation", () {
-      testWidgets("Empty From Validation", (WidgetTester tester) async {
-        await tester.pumpWidget(const MaterialApp(
-          home: AuthScreen(),
-        ));
-        final buttonFinder = find.text('Sign In to Account');
-        final emptyErrorFinder = find.text('Field should not be empty');
-        expect(emptyErrorFinder, findsNothing);
-        await tester.tap(buttonFinder);
-        await tester.pump();
-        expect(emptyErrorFinder, findsNothing);
-      });
-      testWidgets("Form length Validation", (WidgetTester tester) async {
-        await tester.pumpWidget(const MaterialApp(
-          home: AuthScreen(),
-        ));
-        Finder userName = find.byKey(const Key("signInUser"));
-        Finder password = find.byKey(const Key("signInPwd"));
-
-        await tester.enterText(userName, "user_name");
-        await tester.enterText(password, "user_password");
-
-        final buttonFinder = find.text('Sign In to Account');
-        final lengthErrorFinder =
-            find.text('Field should contain minimum 8 Characters');
-        expect(lengthErrorFinder, findsNothing);
-        await tester.tap(buttonFinder);
-        await tester.pump(const Duration(milliseconds: 400));
-        expect(lengthErrorFinder, findsWidgets);
-      });
-    });
-  });
-}
+// authWidgetFailedTest() {
+//   group("Authentication widget check", () {
+//     group("SignIn Validation", () {
+//       testWidgets("Empty From Validation", (WidgetTester tester) async {
+//         await tester.pumpWidget(const MaterialApp(
+//           home: AuthScreen(),
+//         ));
+//         final buttonFinder = find.text('Sign In to Account');
+//         final emptyErrorFinder = find.text('Field should not be empty');
+//         expect(emptyErrorFinder, findsNothing);
+//         await tester.tap(buttonFinder);
+//         await tester.pump();
+//         expect(emptyErrorFinder, findsNothing);
+//       });
+//       testWidgets("Form length Validation", (WidgetTester tester) async {
+//         await tester.pumpWidget(const MaterialApp(
+//           home: AuthScreen(),
+//         ));
+//         Finder userName = find.byKey(const Key("signInUser"));
+//         Finder password = find.byKey(const Key("signInPwd"));
+//
+//         await tester.enterText(userName, "user_name");
+//         await tester.enterText(password, "user_password");
+//
+//         final buttonFinder = find.text('Sign In to Account');
+//         final lengthErrorFinder =
+//             find.text('Field should contain minimum 8 Characters');
+//         expect(lengthErrorFinder, findsNothing);
+//         await tester.tap(buttonFinder);
+//         await tester.pump(const Duration(milliseconds: 400));
+//         expect(lengthErrorFinder, findsWidgets);
+//       });
+//     });
+//   });
+// }

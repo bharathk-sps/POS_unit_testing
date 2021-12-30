@@ -9,8 +9,11 @@ List<AuthUser> dummydata = [
 ];
 
 class AuthService {
+
   AuthService._();
+
   static final AuthService _singleton = AuthService._();
+
   static AuthService get instance => _singleton;
 
   Future<String?> getAuthState() async {
@@ -23,12 +26,36 @@ class AuthService {
     }
   }
 
-  Future<void> setAuthState(String user) async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
+  late List<int> _listOfNo;
+
+  List<int> get listOfNo => _listOfNo;
+
+  Future<void> getFutureData() async {
     try {
-      await _prefs.setString(kAuthStateKey, user);
+      _listOfNo = await Future.delayed(const Duration(seconds: 2),
+          () => List.generate(10, (index) => index + 1));
     } catch (e) {
       debugPrint(e.toString());
+    }
+  }
+
+  Future<int> calculateList() async {
+    try {
+      return await Future.delayed(
+          const Duration(seconds: 2), () => _listOfNo.length);
+    } catch (e) {
+      debugPrint(e.toString());
+      return 0;
+    }
+  }
+
+  Future<bool> setAuthState(String user) async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    try {
+      return await _prefs.setString(kAuthStateKey, user);
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
     }
   }
 
